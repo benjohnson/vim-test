@@ -4,7 +4,11 @@ endif
 
 function! test#python#djangotest#test_file(file) abort
   if fnamemodify(a:file, ':t') =~# g:test#python#djangotest#file_pattern
-    return !empty(findfile('manage.py', '.;'))
+    if exists('g:test#python#runner')
+      return g:test#python#runner == 'djangotest'
+    else
+      return executable('django-admin')
+    endif
   endif
 endfunction
 
